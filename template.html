@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title></title>
+    
+    <!-- Plotting libraries -->
+    <script src="https://cdn.jsdelivr.net/npm/vega@6.2.0"></script>
+    <script src="https://cdn.jsdelivr.net/npm/vega-lite@6.4.3"></script>
+    <script src="https://cdn.jsdelivr.net/npm/vega-embed@7.1.0"></script>
+
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f5f7fb;
+            padding: 20px;
+        }
+
+        /* Grid setup -- 3 columns width */
+        .grid-container {
+            display: grid;
+            grid-template-columns: repeat(3, minmax(0, 1fr));
+            gap: 20px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        /* Plot cars styles */
+        .card {
+            background: #ffffff;
+            border-radius: 8px;
+            padding: 20px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+            display: flex;
+            flex-direction: column;
+        }
+
+        .card h3 {
+            margin-bottom: 15px;
+            color: #333;
+            font-size: 1.1rem;
+        }
+
+        /* Plot container within a card */
+        .plot-container {
+            width: 100%;
+            height: 300px; /* Fixed height for grid stability */
+        }
+
+        /* Style for 2-column card */
+        .span-2 {
+            grid-column: span 2;
+        }
+
+        /* Style for 3-column card */
+        .span-3 {
+            grid-column: span 3;
+        }
+
+        /* Adaptability for tablets */
+        @media (max-width: 900px) {
+            .grid-container {
+                grid-template-columns: repeat(2, minmax(0, 1fr));
+            }
+            .span-2, .span-3 {
+                grid-column: span 2; /* Cards span max 2 columns */
+            }
+        }
+
+        /* Adaptability for smartphones */
+        @media (max-width: 600px) {
+            .grid-container {
+                grid-template-columns: 1fr;
+            }
+            .span-2, .span-3 {
+                grid-column: span 1; /* All cards span 1 column */
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Automatically choose card class and its span based on the template input -->
+    <div class="grid-container">
+        {% for plot in plots.plotList %}
+        <div class="card{% if plot.span and plot.span > 1 %} span-{{ plot.span }}{% endif %}">
+            <h3>{{ plot.title }}</h3>
+            <div id="vis-{{ loop.index }}" class="plot-container"></div>
+        </div>
+        {% endfor %}
+    </div>
+
+    <script>
+        // A function to show a placeholder text when a plot can't be rendered
+        function showPlaceholder(containerId, message) {
+            container = document.getElementById(containerId);
+            if (!container) return;
+
+            const placeholderDiv = document.createElement("div");
+            placeholderDiv.id = `${containerId}-placeholder`; 
+
+            placeholderDiv.textContent = `⚠️ ${message}`;
+
+            container.appendChild(placeholderDiv);
+        }
+
+        // Shared plot datasets
+        const plotDatasets = {{ datasets | dump | safe }} || {};
+
+        // Plots information.
+        const plots = {{ plots | dump | safe }} || {};
+        const plotList = plots.plotList;
+
+        // Render all plots
+        for (const [index, plot] of plotList.entries()) {
+            const containerId = `vis-${index + 1}`;
+
+            let spec = {};
+            
+            // If a custom spec is provided, use that
+            if (plot.customSpec && Object.keys(plot.customSpec).length !== 0) {
+                spec = plot.customSpec;
+            } else if (plot.generatedSpec && Object.keys(plot.generatedSpec).length !== 0) {
+                // Otherwise, use the automatically generated spec
+                spec = plot.generatedSpec;
+            } else { 
+                // Otherwise, display a warning message 
+                showPlaceholder(containerId, `No Vega plot spec is found for plot ${index+1}`); 
+                continue;
+            };
+                
+            // Check whether the spec contains embedded data
+            let specContainsData = false;
+
+            if (spec["$schema"].includes('vega-lite')) {
+                if (spec.data?.values || spec.data?.values?.length > 0) {
+                    specContainsData = true;
+                }
+            } else if (spec["$schema"].includes('vega')) {
+                if (!spec.data === undefined || Object.keys(spec.data)?.length > 0) {
+                    specContainsData = true;
+                }
+            }
+
+            if (!specContainsData) {
+                // If not, see if a dataset name is provided -- if so, assume it
+                // comes from the global set of plotting datasets
+                if (spec.data.name){
+                    if (plotDatasets[spec.data.name]) {
+                        spec.data.values = plotDatasets[spec.data.name];
+                    } else {
+                        console.warn(`Plot ${index+1}: dataset named ${datasetName} is not found`);
+                    };
+                };
+            };
+
+            // Look for any config options for this plot, combining global and 
+            // plot specific options. Plot specific ones take precedence over
+            // global.
+            const embedOptions = { ...(plots.globalConfig || {}), 
+                                   ...(plot.config || {}) }
+            
+            // Render plots
+            vegaEmbed(`#${containerId}`, spec, embedOptions).catch((error) => {
+                console.error("Vega embedding failed:", error);
+                showPlaceholder(containerId, `Failed to render Vega chart with error: ${error}`);
+            });
+        }
+    </script>
+</body>
+</html>
