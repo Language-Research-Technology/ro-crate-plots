@@ -6,6 +6,10 @@
   "author": "Anton Malko",
   "type": "module",
   "main": "index.js",
+  "scripts": {
+    "prep_example_data": "node ./scripts/prep_example_data.js",
+    "render_examples": "node ./scripts/render_examples.js"
+  },
   "dependencies": {
     "@napi-rs/canvas": "^1.0.6",
     "json2csv": "^6.0.0-alpha.2",

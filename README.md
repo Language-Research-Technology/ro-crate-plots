@@ -68,3 +68,30 @@ The overall workflow at this stage:
         priority over `globalConfig`
     + `cardsSpan` -- How many columns should the plot take in the rendered
         HTML; can be 1, 2 or 3.
+
+## Example plots
+
+A simple example shows how to make a barplot and a scatterplot for Sydney Speaks
+metadata. To run the examples, first install the dependencies:
+
+```bash
+npm install
+```
+
+Then run the script to prep the data: it will download Sydney Speaks metadata
+from the LDaCA portal, and then run `roctable` over it to extract the metadata
+in tabular format.
+
+```bash
+npm run prep_example_data
+```
+
+Finally, run the following to produce a very simple dashboard with two plots:
+
+```bash
+npm run render_examples
+```
+
+The config file (`./examples/config/plots-config`) shows how to provide a custom
+Vega-lite spec for the second plot; in this example, the customisation is about
+replacing longer datset names with abbreviated versions.

@@ -1,0 +1,108 @@
+{
+  "plots": {
+    "globalConfig": {
+      "actions": false
+    },
+    "datasets": {
+      "RepositoryObject": "../data/ro-crate_RepositoryObject.csv"
+    },
+    "plotList": [
+      {
+        "dataset": {
+          "name": "RepositoryObject"
+        },
+        "makeSpec": {
+          "plotFunction": "barPlotCount",
+          "args": {
+            "xVar": "dataset_name",
+            "xTitle": "dataset",
+            "yTitle": "count",
+            "data": "RepositoryObject"
+          }
+        },
+        "generatedSpec": {},
+        "customSpec": {},
+        "plotCardSpan": 1
+      },
+      {
+        "dataset": {
+          "name": "RepositoryObject"
+        },
+        "makeSpec": {
+          "plotFunction": "scatterPlot",
+          "args": {
+            "xVar": "speaker_birthDate",
+            "yVar": "dateCreated",
+            "xTitle": "Year of Birth",
+            "yTitle": "Year of interview",
+            "xType": "temporal",
+            "yType": "temporal",
+            "colorVar": "dataset_name",
+            "colorTitle": "Dataset",
+            "xTimeUnit": "year",
+            "yTimeUnit": "year",
+            "data": "RepositoryObject"
+          }
+        },
+        "generatedSpec": {},
+        "customSpec": {
+          "$schema": "https://vega.github.io/schema/vega-lite/v6.json",
+          "autosize": {
+            "type": "fit",
+            "contains": "padding"
+          },
+          "width": "container",
+          "height": "container",
+          "title": {
+            "title": "",
+            "subtitle": ""
+          },
+          "data": {
+            "name": "RepositoryObject"
+          },
+          "mark": {
+            "type": "point"
+          },
+          "encoding": {
+            "tooltip": [
+              {
+                "field": "speaker_birthDate",
+                "type": "temporal",
+                "title": "Year of Birth"
+              },
+              {
+                "field": "dateCreated",
+                "type": "temporal",
+                "title": "Year of interview"
+              },
+              {
+                "field": "dataset_name",
+                "title": "Dataset"
+              }
+            ],
+            "x": {
+              "field": "speaker_birthDate",
+              "type": "temporal",
+              "timeUnit": "year",
+              "title": "Year of Birth"
+            },
+            "y": {
+              "field": "dateCreated",
+              "type": "temporal",
+              "timeUnit": "year",
+              "title": "Year of interview"
+            },
+            "color": {
+              "field": "dataset_name",
+              "title": "Dataset",
+              "legend": {
+                "labelExpr": "{'Sydney Social Dialect Survey (SSDS)': 'SSDS', 'NSW Bicentennial Oral History Project (BCNT)': 'BCNT', 'ANU Corpus of Sydney Speech': 'ACSS'}[datum.label] || datum.label"
+              }
+            }
+          }
+        },
+        "plotCardSpan": 1
+      }
+    ]
+  }
+}
