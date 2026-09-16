@@ -4,5 +4,12 @@ node_modules
 # IDE files
 .vscode
 
-# Data
-data/
+# Draft code
+drafts
+
+# Examples -- ignore data and generated dashboard
+examples/data
+examples/example_dashboard.html
+
+# Map tiles cache for map plots
+tile_cache
