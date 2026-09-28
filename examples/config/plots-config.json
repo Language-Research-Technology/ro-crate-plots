@@ -4,7 +4,9 @@
       "actions": false
     },
     "datasets": {
-      "RepositoryObject": "../data/ro-crate_RepositoryObject.csv"
+      "RepositoryObject": {
+        "path": "../data/ro-crate_RepositoryObject.csv"
+        }
     },
     "plotList": [
       {
