@@ -6,7 +6,7 @@
     "datasets": {
       "RepositoryObject": {
         "path": "../data/ro-crate_RepositoryObject.csv"
-        }
+      }
     },
     "plotList": [
       {
@@ -17,9 +17,15 @@
           "plotFunction": "barPlotCount",
           "args": {
             "xVar": "dataset_name",
-            "xTitle": "dataset",
+            "xTitle": "Dataset",
+            "xLabels": {
+              "Sydney Social Dialect Survey (SSDS)": "SSDS",
+              "NSW Bicentennial Oral History Project (BCNT)": "BCNT",
+              "ANU Corpus of Sydney Speech": "ACSS"
+            },
             "yTitle": "count",
-            "data": "RepositoryObject"
+            "data": "RepositoryObject",
+            "title": "Counts of speakers"
           }
         },
         "generatedSpec": {},
@@ -34,75 +40,78 @@
           "plotFunction": "scatterPlot",
           "args": {
             "xVar": "speaker_birthDate",
-            "yVar": "dateCreated",
-            "xTitle": "Year of Birth",
-            "yTitle": "Year of interview",
             "xType": "temporal",
+            "xTitle": "Year of Birth",
+            "xTimeUnit": "year",
+            "yVar": "dateCreated",
             "yType": "temporal",
+            "yTitle": "Year of interview",
+            "yTimeUnit": "year",
             "colorVar": "dataset_name",
             "colorTitle": "Dataset",
-            "xTimeUnit": "year",
-            "yTimeUnit": "year",
-            "data": "RepositoryObject"
+            "colorLabels": {
+              "Sydney Social Dialect Survey (SSDS)": "SSDS",
+              "NSW Bicentennial Oral History Project (BCNT)": "BCNT",
+              "ANU Corpus of Sydney Speech": "ACSS"
+            },
+            "data": "RepositoryObject",
+            "title": "Birth year vs. year of interview"
           }
         },
         "generatedSpec": {},
-        "customSpec": {
-          "$schema": "https://vega.github.io/schema/vega-lite/v6.json",
-          "autosize": {
-            "type": "fit",
-            "contains": "padding"
-          },
-          "width": "container",
-          "height": "container",
-          "title": {
-            "title": "",
-            "subtitle": ""
-          },
-          "data": {
-            "name": "RepositoryObject"
-          },
-          "mark": {
-            "type": "point"
-          },
-          "encoding": {
-            "tooltip": [
-              {
-                "field": "speaker_birthDate",
-                "type": "temporal",
-                "title": "Year of Birth"
-              },
-              {
-                "field": "dateCreated",
-                "type": "temporal",
-                "title": "Year of interview"
-              },
-              {
-                "field": "dataset_name",
-                "title": "Dataset"
-              }
-            ],
-            "x": {
-              "field": "speaker_birthDate",
-              "type": "temporal",
-              "timeUnit": "year",
-              "title": "Year of Birth"
+        "customSpec": {},
+        "plotCardSpan": 1
+      },
+      {
+        "dataset": {
+          "name": "RepositoryObject"
+        },
+        "makeSpec": {
+          "plotFunction": "boxPlot",
+          "args": {
+            "xVar": "dataset_name",
+            "xTitle": "Dataset",
+            "yVar": "speaker_birthDate",
+            "yType": "temporal",
+            "yTitle": "Birth date",
+            "colorVar": "speaker_gender",
+            "colorTitle": "Gender",
+            "xLabels": {
+              "Sydney Social Dialect Survey (SSDS)": "SSDS",
+              "NSW Bicentennial Oral History Project (BCNT)": "BCNT",
+              "ANU Corpus of Sydney Speech": "ACSS"
             },
-            "y": {
-              "field": "dateCreated",
-              "type": "temporal",
-              "timeUnit": "year",
-              "title": "Year of interview"
-            },
-            "color": {
-              "field": "dataset_name",
-              "title": "Dataset",
-              "legend": {
-                "labelExpr": "{'Sydney Social Dialect Survey (SSDS)': 'SSDS', 'NSW Bicentennial Oral History Project (BCNT)': 'BCNT', 'ANU Corpus of Sydney Speech': 'ACSS'}[datum.label] || datum.label"
-              }
-            }
+            "data": "RepositoryObject",
+            "title": [
+              "Distribution of birth dates",
+              "by dataset and gender"
+            ]
           }
         },
+        "generatedSpec": {},
+        "customSpec": {},
+        "plotCardSpan": 1
+      },
+      {
+        "dataset": {
+          "name": "RepositoryObject"
+        },
+        "makeSpec": {
+          "plotFunction": "histogramPlot",
+          "args": {
+            "xVar": "dateCreated",
+            "xType": "temporal",
+            "xTitle": "Year of interview",
+            "xTimeUnit": "year",
+            "data": "RepositoryObject",
+            "title": [
+              "Histogram of interviews",
+              "years"
+            ]
+          }
+        },
+        "generatedSpec": {},
+        "customSpec": {},
         "plotCardSpan": 1
       }
     ]
