@@ -1,5 +1,4 @@
 import { renderTemplate } from '../index.js';
-debugger;
 
 const configFile = "./examples/config/plots-config.json";
 const templateFile = "./template.html";
