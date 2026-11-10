@@ -12,13 +12,14 @@
   },
   "dependencies": {
     "@napi-rs/canvas": "^1.0.6",
+    "arquero": "^8.0.3",
+    "csv-parse": "^7.0.2",
     "json2csv": "^6.0.0-alpha.2",
     "nunjucks": "^3.2.4",
     "ro-crate": "^3.7.2",
     "roctable": "github:ptsefton/roctable",
     "sharp": "^0.35.3",
     "vega": "^6.3.1",
-    "vega-lite": "^6.4.3",
-    "csv-parse": "^7.0.2"
+    "vega-lite": "^6.4.3"
   }
 }
