@@ -103,6 +103,7 @@
             "xType": "temporal",
             "xTitle": "Year of interview",
             "xTimeUnit": "year",
+            "step": 1,
             "data": "RepositoryObject",
             "title": [
               "Histogram of interviews",
